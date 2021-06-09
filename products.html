@@ -1,4 +1,4 @@
-!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-Hant-TW">
   <head>
     <meta charset="UTF-8" />
@@ -18,7 +18,11 @@
     <div id="app">
       <div class="container">
         <div class="text-end mt-4">
-          <button class="btn btn-primary" @click="openModal('newItem')">
+          <button
+            class="btn btn-primary"
+            type="button"
+            @click="openModal('newItem')"
+          >
             建立新的產品
           </button>
         </div>
@@ -65,7 +69,7 @@
                   <button
                     type="button"
                     class="btn btn-outline-danger btn-sm"
-                    @click="openModal('delItem', product.id)"
+                    @click="openModal('delItem', product)"
                   >
                     刪除
                   </button>
@@ -90,12 +94,13 @@
           <div class="modal-content border-0">
             <div class="modal-header bg-dark text-white">
               <h5 id="productModalLabel" class="modal-title">
-                <span>新增產品</span>
+                <span>{{modalTitle}}</span>
               </h5>
               <button
                 type="button"
                 class="btn-close"
-                @click="openModal('newItem')"
+                data-bs-dismiss="modal"
+                aria-label="Close"
               ></button>
             </div>
             <div class="modal-body">
@@ -104,6 +109,7 @@
                   <div class="form-group">
                     <label for="imageUrl">主要圖片</label>
                     <input
+                      id="imageUrl"
                       v-model="tempProducts.imageUrl"
                       type="text"
                       class="form-control"
@@ -119,7 +125,7 @@
                       :key="key"
                     >
                       <div class="form-group">
-                        <label for="imageUrl">輸入圖片網址</label>
+                        <label for="imagesUrl">輸入圖片網址</label>
                         <input
                           type="text"
                           class="form-control"
@@ -130,7 +136,7 @@
                         <img class="img-fluid" :src="img" alt="" />
                       </div>
                     </div>
-                    <div
+                    <template
                       v-if="!tempProducts.imagesUrl.length || tempProducts.imagesUrl[tempProducts.imagesUrl.length - 1]"
                     >
                       <!-- 
@@ -140,42 +146,47 @@
                     
                     -->
                       <button
+                        type="button"
                         class="btn btn-outline-primary btn-sm d-block w-100"
                         @click="tempProducts.imagesUrl.push('https://picsum.photos/40'+tempProducts.imagesUrl.length)"
                       >
                         自動產生圖片(多圖)
                       </button>
                       <button
+                        type="button"
                         class="btn btn-outline-primary btn-sm d-block w-100"
                         @click="tempProducts.imagesUrl.push('')"
                       >
                         <!-- (1). push：本來沒有欄位，push一個空字串產生欄位 -->
                         新增圖片(多圖)
                       </button>
-                    </div>
-                    <div v-else>
+                    </template>
+                    <template v-else>
                       <button
+                        type="button"
                         class="btn btn-outline-danger btn-sm d-block w-100"
                         @click="tempProducts.imagesUrl.pop()"
                       >
                         刪除圖片
                       </button>
-                    </div>
+                    </template>
                   </div>
-                  <div v-else>
+                  <template v-else>
                     <button
+                      type="button"
                       class="btn btn-outline-primary btn-sm d-block w-100"
                       @click="autoImg"
                     >
                       自動產生圖片(主要圖片)
                     </button>
                     <button
+                      type="button"
                       class="btn btn-outline-primary btn-sm d-block w-100"
                       @click="addImg"
                     >
                       新增圖片(主要圖片)
                     </button>
-                  </div>
+                  </template>
                 </div>
                 <div class="col-sm-8">
                   <div class="form-group">
@@ -201,7 +212,7 @@
                       />
                     </div>
                     <div class="form-group col-md-6">
-                      <label for="price">單位</label>
+                      <label for="unit">單位</label>
                       <input
                         id="unit"
                         type="text"
@@ -252,7 +263,7 @@
                   <div class="form-group">
                     <label for="content">說明內容</label>
                     <textarea
-                      id="description"
+                      id="content"
                       type="text"
                       class="form-control"
                       placeholder="請輸入說明內容"
@@ -316,7 +327,8 @@
             </div>
             <div class="modal-body">
               是否刪除
-              <strong class="text-danger"></strong> 商品(刪除後將無法恢復)。
+              <strong class="text-danger">{{delTitle}}</strong>
+              商品(刪除後將無法恢復)。
             </div>
             <div class="modal-footer">
               <button

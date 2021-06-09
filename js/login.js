@@ -1,3 +1,5 @@
+const url = "https://vue3-course-api.hexschool.io";
+
 const app = Vue.createApp({
   data() {
     return {
@@ -5,15 +7,14 @@ const app = Vue.createApp({
         username: "",
         password: "",
       },
-      url: "https://vue3-course-api.hexschool.io",
     };
   },
   methods: {
     login() {
       axios
-        .post(`${this.url}/admin/signin`, this.user) //請求的方法
+        .post(`${url}/admin/signin`, this.user) //請求的方法
         .then((res) => {
-          if (res.data.success == true) {
+          if (res.data.success) {
             const { token, expired } = res.data;
             console.log(token, expired);
             document.cookie = `hexToken=${token}; expires=${new Date(expired)}`;
@@ -26,9 +27,6 @@ const app = Vue.createApp({
           console.dir(error);
         });
     },
-  },
-  mounted() {
-    console.log("test");
   },
 });
 
